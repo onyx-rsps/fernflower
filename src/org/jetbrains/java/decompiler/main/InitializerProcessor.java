@@ -22,10 +22,12 @@ public final class InitializerProcessor {
   public static void extractInitializers(ClassWrapper wrapper) {
     MethodWrapper method = wrapper.getMethodWrapper(CodeConstants.CLINIT_NAME, "()V");
     if (method != null && method.root != null) {  // successfully decompiled static constructor
-      extractStaticInitializers(wrapper, method);
+      if(wrapper.getClassStruct().hasModifier(CodeConstants.ACC_ENUM)) {
+        extractStaticInitializers(wrapper, method);
+      }
     }
 
-    extractDynamicInitializers(wrapper);
+    //extractDynamicInitializers(wrapper);
 
     // required e.g. if anonymous class is being decompiled as a standard one.
     // This can happen if InnerClasses attributes are erased
